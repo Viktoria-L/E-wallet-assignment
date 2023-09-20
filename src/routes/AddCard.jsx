@@ -3,15 +3,17 @@ import Cards from 'react-credit-cards-2';
 import 'react-credit-cards-2/dist/es/styles-compiled.css';
 import { useSelector, useDispatch } from 'react-redux'
 import { setCardInput, addCard } from "../features/cards/cardSlice";
+import { v4 as uuidv4 } from 'uuid';
 
 const AddCard = () => {
     const dispatch = useDispatch();
     const cardState = useSelector((state) => state.cardInStore.card)
     const userName = useSelector((state)=> state.cardInStore.randomName.first + " " + state.cardInStore.randomName.last)
-
+    const newCard = {...cardState, id: uuidv4()};
+    
 //Focus need to be set here for the flipcard-function
         const [focus, setFocus] = useState('');
-        const [selectedCard, setSelectedCard] = useState('');
+        const [selectedCard, setSelectedCard] = useState("");
         const [validationError, setValidationError] = useState(null);
 
 
@@ -31,7 +33,7 @@ const AddCard = () => {
         const handleAddCard = (e) => {
             e.preventDefault();
             if (validateForm()) {
-                dispatch(addCard(cardState));
+                dispatch(addCard(newCard));
             }
         };
 
@@ -39,26 +41,26 @@ const AddCard = () => {
             setSelectedCard(e.target.value);
         }
  
-    // Definiera olika patterns och titles beroende på selectedCard
-    let pattern, title;
-    if (selectedCard === 'visa') {
-      pattern = "4\\d{15}";
-      title = 'Enter Visa card number (16 digits starting with 4)';
-    } else if (selectedCard === 'mastercard') {
-      pattern = '(51|52|53|54|55)\\d{14}';
-      title = 'Enter MasterCard card number (16 digits starting with 51/52/53/54 or 55)';
-    } else if (selectedCard === 'american express') {
-      pattern = '(34|37)\\d{14}';
-      title = 'Enter American Express card number (16 digits starting with 34 or 37)';
-    } else {
-      pattern = ''; // Om inget kort är valt, kan pattern och title vara tomma strängar
-      title = '';
-    }
+        // Definiera olika patterns och titles beroende på selectedCard
+        let pattern, title;
+        if (selectedCard === 'visa') {
+        pattern = "4\\d{15}";
+        title = 'Enter Visa card number (16 digits starting with 4)';
+        } else if (selectedCard === 'mastercard') {
+        pattern = '(51|52|53|54|55)\\d{14}';
+        title = 'Enter MasterCard card number (16 digits starting with 51/52/53/54 or 55)';
+        } else if (selectedCard === 'american express') {
+        pattern = '(34|37)\\d{14}';
+        title = 'Enter American Express card number (16 digits starting with 34 or 37)';
+        } else {
+        pattern = ''; // Om inget kort är valt, kan pattern och title vara tomma strängar
+        title = '';
+        }
 
         //Ta bort denna useffect sen
         useEffect(()=> {
             console.log("valt kort", selectedCard, pattern)
-        }, [selectedCard])
+        }, [selectedCard, newCard])
 
         const handleInputChange = (e) => {
             const { name, value } = e.target;
@@ -78,13 +80,16 @@ const AddCard = () => {
 
                 <form className="flex flex-col gap-4" onSubmit={handleAddCard}>
                 <div className="">
+               
                 <label htmlFor="vendor">VISA</label>
                 <input type="radio" name="vendor" value="visa" onChange={handleSelectedCard} />
                 <label htmlFor="vendor">Mastercard</label>
                 <input type="radio" name="vendor" value="mastercard" onChange={handleSelectedCard}/>
                 <label htmlFor="vendor">American Express</label>
                 <input type="radio" name="vendor" value="american express" onChange={handleSelectedCard} />
-                
+                {!selectedCard && (
+                <div className="text-red-600">Please select a card vendor.</div>
+                )}
                 </div>
                 
                 <input

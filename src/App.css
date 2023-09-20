@@ -4,3 +4,42 @@
   padding: 2rem;
   text-align: center;
 }
+
+
+/* ACTIVE CARD CSS */
+
+/*
+ .card {
+  width: 200px;
+  height: 100px;
+  background-color: lightgray;
+  margin: 10px;
+  padding: 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+.active {
+  background-color: lightblue;
+  transform: translateY(-10px); 
+} */
+
+/* 
+div .card {
+  margin-top: 30px;
+} */
+
+.card-container {
+  display: flex;
+  flex-direction: column; /* Visa korten i en kolumn */
+  align-items: center; /* Centrera korten horisontellt */
+}
+
+.card {
+  margin-bottom: 10px; /* Avstånd mellan korten */
+  transition: transform 0.2s; /* Gör övergången mjuk */
+}
+
+.active {
+  order: -1; /* Flytta det aktiva kortet till toppen */
+}
