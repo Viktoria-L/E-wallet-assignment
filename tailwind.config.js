@@ -8,5 +8,10 @@ export default {
     extend: {},
   },
   plugins: [],
+  darkMode: 'class',
+  fontFamily: {
+    fira: ['Fira Sans'],
+  },
 }
+
 

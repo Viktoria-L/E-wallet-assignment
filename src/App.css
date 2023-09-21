@@ -1,45 +1,95 @@
 #root {
   max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  margin: 0;
+  min-width: 100vw;
+  font-family: 'Fira Sans', sans-serif;
+  
 }
+a.active:not(.homeNav) {
+  border-bottom: 2px solid #9132e7;
+}
+
+/* .main-div {
+  background: rgb(20,20,20);
+background: linear-gradient(180deg, rgba(20,20,20,1) 38%, rgba(74,26,120,1) 81%, rgba(143,49,233,1) 100%);
+} */
 
 
 /* ACTIVE CARD CSS */
 
-/*
- .card {
-  width: 200px;
-  height: 100px;
-  background-color: lightgray;
-  margin: 10px;
-  padding: 10px;
-  cursor: pointer;
-  transition: transform 0.3s ease-in-out;
-}
-
-.active {
-  background-color: lightblue;
-  transform: translateY(-10px); 
-} */
-
-/* 
-div .card {
-  margin-top: 30px;
-} */
-
 .card-container {
   display: flex;
   flex-direction: column; /* Visa korten i en kolumn */
-  align-items: center; /* Centrera korten horisontellt */
+  align-items: flex-start; /* Centrera korten horisontellt */
+  position: relative;
+}
+.card-wrapper {
+  position: relative;
+  margin-top: 240px;
 }
 
 .card {
-  margin-bottom: 10px; /* Avstånd mellan korten */
-  transition: transform 0.2s; /* Gör övergången mjuk */
+ position: absolute;
+
+  /* margin-bottom: 10px;  Avstånd mellan korten */
+  transition: transform 0.3s; /* Gör övergången mjuk */
+  /* Gör "card" till en absolut position inom "card-container". */
+  /* nu hamnar kortet under det aktiva kortet. */
+ /* z-index: 1;  Ange z-index för att kontrollera staplingsordningen, högre värde för högre stapling. */
 }
 
-.active {
-  order: -1; /* Flytta det aktiva kortet till toppen */
+.card:nth-child(1) {
+  z-index: 1; 
+  top: 0;   
+  left: 0;
+
+ 
+}
+.card:nth-child(2) {
+  z-index: 2; 
+  top: 60px; 
+  left: 0;
+}
+
+.card:nth-child(3) {
+  z-index: 3; 
+  top: 120px;
+  left: 0;
+  
+} 
+
+.active-card {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  order: -1; 
+  z-index: 5; 
+  transform: translate(0,0);
+} 
+
+/* CARD BACKGROUND */
+.rccs__card--visa .rccs__card__background {
+  background: purple !important;
+  background: rgb(241,90,228) !important;
+background: linear-gradient(222deg, rgba(241,90,228,1) 0%, rgba(238,108,39,1) 100%) !important;
+}
+
+.rccs__card--mastercard .rccs__card__background {
+  background: rgb(131,58,180) !important;
+  background: linear-gradient(113deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%) !important;
+}
+
+.rccs__card--american-express .rccs__card__background {
+  background: rgb(2,0,36) !important;
+background: linear-gradient(218deg, rgba(2,0,36,1) 22%, rgba(56,9,121,1) 41%, rgba(53,21,129,1) 63%, rgba(0,212,255,1) 100%) !important;
+}
+
+.rccs__card--unknown > div {
+  /* background: rgb(222, 161, 64) !important; */
+  background: rgb(211, 74, 200) !important;
+background: linear-gradient(222deg, rgb(237, 49, 222) 16%, rgb(34, 203, 25) 84%) !important;
+}
+/* CARD TEXT COLOR */
+.rccs__card--mastercard > div {
+  color: black !important;
 }

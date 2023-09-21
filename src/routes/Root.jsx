@@ -1,24 +1,30 @@
-import { Outlet } from "react-router-dom"
+import { Outlet, useLoaderData } from "react-router-dom"
 import { Navbar } from "../components/Navbar";
-import { useLoaderData } from "react-router-dom";
-import { changeName } from '../features/cards/cardSlice';
 import { useDispatch } from 'react-redux';
+import { useState, useEffect } from "react";
+import { FaMoon, FaSun } from "react-icons/fa6";
 
 const Root = () => {
-    const data = useLoaderData();
-    const dispatch = useDispatch()
-    console.log(data.results[0])
-    //Använd datan och spara namnet med redux state
-  if(data){
-    dispatch(changeName(data.results[0]));
-    }
+    const [darkMode, setDarkMode] = useState(false);
+    const userData = useLoaderData();
+    const dispatch = useDispatch();
+    const userName = `${userData.results[0]?.name.first} ${userData.results[0]?.name.last}`
+
+    useEffect(() => {
+        if (darkMode) {
+            document.documentElement.classList.add("dark");
+        } else {
+            document.documentElement.classList.remove("dark");
+        }
+    }, [darkMode]);
 
     return (
-        <div>
-            <Navbar />
-            <h1>Roooots m outlet under</h1>
-            <p>Data med förnamn: {data.results[0]?.name.first}</p>
-            <Outlet />
+        <div className={`main-div h-screen text-black dark:text-white dark:bg-black`}>
+            <button onClick={() => {setDarkMode((prevState) => !prevState)}}>
+                {darkMode ? <FaSun className="text-lg mt-1 ml-1" /> : <FaMoon className="text-xl mt-1 ml-1" />}
+            </button>
+            <Navbar />          
+            <Outlet context={userName} />
         </div>
     )
 }

@@ -17,13 +17,13 @@ const randomName = {
 const cardSlice = createSlice({
   name: "cards",
   initialState: {
-    randomName: randomName,
+    // randomName: randomName,
     card: { //Förhandsgranskningskort placeholder
       number: "",
-      name: randomName.first + randomName.last,
+      name: "",
       expiry: "",
       cvc: "",
-      // focus: "",
+      
     },
     activeCardId: null,
     cards: [{ // En array för att spara flera kreditkort,
@@ -32,6 +32,7 @@ const cardSlice = createSlice({
       expiry: "1203",
       cvc: "564",
       id: uuidv4(),
+      vendor: "VISA",
     }], 
     } , 
   reducers: {
@@ -51,20 +52,26 @@ const cardSlice = createSlice({
       console.log("Redux State efter toggleActiveCard:", JSON.parse(JSON.stringify(state)));
       console.log(JSON.parse(JSON.stringify(state.cards)))
       },    
-     // deleteTodo: (state, action) => {
-    //     console.log("tar bort todo");
-    //     state.todos.splice(i === action.payload, 1);
-    // },
-    changeName: (state, action) => {
-        console.log("ändrar namn", action.payload.name.first);
-        state.randomName.first = action.payload.name.first;
-        state.randomName.last = action.payload.name.last;
+     deleteCard: (state, action) => {
+        console.log("tar bort kort: ", action.payload);
+        const targetId = action.payload; // ID att ta bort
+        const updatedCards = state.cards.filter(card => card.id !== targetId);
+      console.log("updatedCards: ", updatedCards)
+        // Uppdatera state med de kvarvarande korten
+        state.cards = updatedCards;
+    },
+    // changeName: (state, action) => {
+    //     console.log("ändrar namn", action.payload.name.first);
+    //     state.randomName.first = action.payload.name.first;
+    //     state.randomName.last = action.payload.name.last;
 
-        console.log("från changeName", state.randomName.first + " " + state.randomName.last)
-    },    
+    //     console.log("från changeName", state.randomName.first + " " + state.randomName.last)
+    // },    
   }
 });
 
-export const { changeName, setCardInput, addCard, toggleActiveCard } = cardSlice.actions;
+
+
+export const { changeName, setCardInput, addCard, toggleActiveCard, deleteCard } = cardSlice.actions;
 
 export default cardSlice.reducer;

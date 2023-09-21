@@ -1,9 +1,10 @@
-// import Cards from 'react-credit-cards-2';
-// import { useSelector } from 'react-redux';
-// import { toggleActiveCard } from '../features/cards/cardSlice';
 import CardList from "../features/cards/CardList";
+import { useOutletContext } from "react-router-dom";
 
-const myCards = () => {
+
+const MyCards = () => {
+    let userName = useOutletContext();
+
 
     // const userName = useSelector((state) => state.cardInStore.randomName.first + " "  + state.cardInStore.randomName.last)
     // const cards = useSelector((state) => state.cardInStore.cards);
@@ -13,20 +14,10 @@ const myCards = () => {
     return (
         <div>
 
-            <CardList />
+            <CardList userName={userName} />
         </div>
 
-        // <div className="cards">
-        // <h1>Här är dina kort</h1>
-
-        // {/* AKTIVT KORT FÖRST, borde denna kanske vara en komponent? cardlisten , flytta CARDS-komponenten in i card eller nåt för 
-        // att kunna använda onclick*/}
-        //     {cards.map((card, i) => (<div onClick={()=>{console.log(card.isActive)}}>
-        //         <p>{card.isActive}</p> <Cards cvc={card.cvc} expiry={card.expiry} name={userName} number={card.number} key={i} />
-        //         </div>))}       
-           
-        // </div>
     )
 }
 
-export default myCards;
+export default MyCards;

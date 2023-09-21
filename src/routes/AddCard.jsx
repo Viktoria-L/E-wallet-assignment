@@ -4,19 +4,24 @@ import 'react-credit-cards-2/dist/es/styles-compiled.css';
 import { useSelector, useDispatch } from 'react-redux'
 import { setCardInput, addCard } from "../features/cards/cardSlice";
 import { v4 as uuidv4 } from 'uuid';
+import { useOutletContext } from "react-router-dom";
+
 
 const AddCard = () => {
+    //Focus need to be set here for the flipcard-function
+    const [focus, setFocus] = useState('');
+    const [selectedCard, setSelectedCard] = useState("");
+    const [validationError, setValidationError] = useState(null);
+    let userName = useOutletContext();
+
+
     const dispatch = useDispatch();
+    const allCards = useSelector((state) => state.cardInStore.cards)
     const cardState = useSelector((state) => state.cardInStore.card)
-    const userName = useSelector((state)=> state.cardInStore.randomName.first + " " + state.cardInStore.randomName.last)
-    const newCard = {...cardState, id: uuidv4()};
+    //const userName = useSelector((state)=> state.cardInStore.randomName.first + " " + state.cardInStore.randomName.last)
+    const newCard = {...cardState, vendor: selectedCard, id: uuidv4()};
     
-//Focus need to be set here for the flipcard-function
-        const [focus, setFocus] = useState('');
-        const [selectedCard, setSelectedCard] = useState("");
-        const [validationError, setValidationError] = useState(null);
-
-
+    console.log("allcards", allCards.length)
         const validateForm = () => {
             if (!selectedCard) {
                 setValidationError("Please select a card vendor.");
@@ -41,7 +46,7 @@ const AddCard = () => {
             setSelectedCard(e.target.value);
         }
  
-        // Definiera olika patterns och titles beroende på selectedCard
+        // Change pattern and title depending on selectedCard
         let pattern, title;
         if (selectedCard === 'visa') {
         pattern = "4\\d{15}";
@@ -53,14 +58,9 @@ const AddCard = () => {
         pattern = '(34|37)\\d{14}';
         title = 'Enter American Express card number (16 digits starting with 34 or 37)';
         } else {
-        pattern = ''; // Om inget kort är valt, kan pattern och title vara tomma strängar
+        pattern = '';
         title = '';
         }
-
-        //Ta bort denna useffect sen
-        useEffect(()=> {
-            console.log("valt kort", selectedCard, pattern)
-        }, [selectedCard, newCard])
 
         const handleInputChange = (e) => {
             const { name, value } = e.target;
@@ -68,8 +68,10 @@ const AddCard = () => {
         };
     
         return (
-                    
-            <div>
+        
+            <>
+            {allCards.length < 4 ? 
+            <div className="">
                 <Cards
                 cvc={cardState.cvc}
                 expiry={cardState.expiry}
@@ -78,7 +80,7 @@ const AddCard = () => {
                 number={cardState.number}
                 />
 
-                <form className="flex flex-col gap-4" onSubmit={handleAddCard}>
+                <form className="flex flex-col gap-4 text-black" onSubmit={handleAddCard}>
                 <div className="">
                
                 <label htmlFor="vendor">VISA</label>
@@ -120,11 +122,11 @@ const AddCard = () => {
                 type="tel"
                 name="expiry"
                 value={cardState.expiry}
-                placeholder={"Enter Expiry date"}
+                placeholder={"MM/YY"}
                 onChange={handleInputChange}
                 onFocus={e=>setFocus(e.target.name)}
                 maxLength="4"
-                pattern="\d{4}"
+                pattern="[0-1][0-9][0-9][0-9]"
                 required
                 />
 
@@ -132,7 +134,7 @@ const AddCard = () => {
                 type="tel"
                 name="cvc"
                 value={cardState.cvc}
-                placeholder={"Enter Cvc"}
+                placeholder={"Enter CVC"}
                 onChange={handleInputChange}       
                 onFocus={e=>setFocus(e.target.name)}
                 maxLength="3"
@@ -141,36 +143,14 @@ const AddCard = () => {
                 />
              
                 <div className="text-red-600">{validationError}</div>
-                <button type="submit">Add card</button>
+                <button type="submit" className="text-white">Add card</button>
                 </form>
 
-        </div>
+            </div>
+            : <p>Du har för många kort, lägg till komponent här</p>    }
           
-            
+            </>
         )
     }
     
     export default AddCard;
-
-
-    // -----------GAMMAL KOD NEDANFÖR--------------//
-
-    // <h1>Add Card</h1>
-    // <div>FÖRHANDSVISNING AV KORT</div>
-    // <form>ska jag ha form eller nåt annat
-    //     <br />
-    //     <label htmlFor="vendor">Select cardvendor: </label>
-    //     <select name="vendor">
-    //         <option value="mastercard">Mastercard</option>
-    //         <option value="visa">Visa</option>
-    //         <option value="american express">American Express</option>
-    //     </select>
-       
-    //     <input type="number" placeholder="card number" />
-    //     {/* OM API har hämtat en person så ska det namnet stå här automatiskt
-    //     och personen skas inte kunna skriva in namn dvs disable rutan */}
-    //     <input type="text" placeholder="Card holder" />
-    //     <input type="number" name="month" placeholder="expire month"/>
-    //     <input type="number" name="year" placeholder="expire year" />
-    //     <input type="number" name="ccv" placeholder="CCV" />
-    // </form>
