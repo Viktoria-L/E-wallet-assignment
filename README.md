@@ -25,23 +25,16 @@ Applikationen ska ha två routes (du får ändra namnet på dessa om du vill) :
 ● Högst upp ska en förhandsvisning av kortet finnas, som uppdateras automatiskt när användare fyller i informationen.
 
 ## Funktionella krav
-#### För att få Godkänt ska du:
-
 ● Ha använt React för att lösa uppgiften. 
 ● Lagt till grundläggande funktionalitet som att visa ut samtliga kort och lägga till nya kort. 
 ● Det är en single file application (SPA) som använder react-router.
 ● Det ska finnas ett aktivt betalkort vid start av applikationen.
 ● Användaren ska kunna ha upp till max 4 kort, och måste alltid minst ha ett kort i sin e-wallet.
-
-#### För att få Väl Godkänt ska du:
-
-● Använda Redux 
-● Ha funktionalitet för ha aktivt kort.
+● Ha funktionalitet för att ha aktivt kort.
 ● Gör ett API call vid start av applikationen, där du hämtar en slumpvald användare från följande API: https://randomuser.me/api/.
 ● Denna personens för och efternamn ska stå med stora bokstäver på samtliga kort som finns/skapas.
 ● Det ska gå att ta bort kort från listan.  Det ska dock INTE vara möjligt att ta bort ett kort som är aktivt.
 ● Fälten när en kort läggs till ska valideras så att fältet kortnummer måste innehålla 16 siffror. Fältet för namn ska inte gå att fylla i, och förhandsvisningen av kortet ska istället alltid visa användarens namn som hämtats från API:et.
-● Inga större buggar.
 
 
 

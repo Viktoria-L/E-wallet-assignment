@@ -1,11 +1,7 @@
-import { useOutletContext, Link } from "react-router-dom";
-import { useSelector } from 'react-redux'
+import { Link } from "react-router-dom";
 
 const Home = () => {
-    let userName = useOutletContext();
-    const status = useSelector((state) => state.cardInStore.status)
-
-   
+       
     return (
         <div className="flex flex-col md:flex-row items-center h-full mx-8 gap-8">
             

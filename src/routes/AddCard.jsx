@@ -5,20 +5,20 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setCardInput, addCard, resetCardInput } from "../features/cards/cardSlice";
 import { v4 as uuidv4 } from 'uuid';
 import { useOutletContext } from "react-router-dom";
-import { MaxCards } from '../features/cards/MaxCards'
+import { MaxCards } from '../features/cards/MaxCards';
 
 
 const AddCard = () => {
-    const [focus, setFocus] = useState('');
-    const [selectedCard, setSelectedCard] = useState("");
-    const [validationError, setValidationError] = useState(null);
-    const [infoMsg, setInfoMsg] = useState("");
-    let userName = useOutletContext();
+        const [focus, setFocus] = useState('');
+        const [selectedCard, setSelectedCard] = useState("");
+        const [validationError, setValidationError] = useState(null);
+        const [infoMsg, setInfoMsg] = useState("");
+        let userName = useOutletContext();
 
-    const dispatch = useDispatch();
-    const allCards = useSelector((state) => state.cardInStore.cards)
-    const cardState = useSelector((state) => state.cardInStore.card)
-    const newCard = {...cardState, cardHolder: userName, vendor: selectedCard, id: uuidv4()};
+        const dispatch = useDispatch();
+        const allCards = useSelector((state) => state.cardInStore.cards)
+        const cardState = useSelector((state) => state.cardInStore.card)
+        const newCard = {...cardState, cardHolder: userName, vendor: selectedCard, id: uuidv4()};
 
         const validateForm = () => {
             if (!selectedCard) {
@@ -52,6 +52,11 @@ const AddCard = () => {
         const handleSelectedCard = (e) => {
             setSelectedCard(e.target.value);
         }
+
+        const handleInputChange = (e) => {
+            const { name, value } = e.target;
+            dispatch(setCardInput({ field: name, value }));
+        };
  
         // Change pattern, title, placeholder depending on selectedCard
         let pattern, title, placeholder;
@@ -72,12 +77,8 @@ const AddCard = () => {
         title = '';
         }
 
-        const handleInputChange = (e) => {
-            const { name, value } = e.target;
-            dispatch(setCardInput({ field: name, value }));
-        };
     
-        return (
+    return (
         
             <>
             {allCards.length < 4 ? 
@@ -179,10 +180,9 @@ const AddCard = () => {
                 <div className="mt-4 text-center text-sm">{infoMsg}</div>
 
             </div>
-            : <MaxCards / >}
-          
-            </>
-        )
-    }
-    
-    export default AddCard;
+            : <MaxCards / >}          
+        </>
+    )
+}   
+
+export default AddCard;

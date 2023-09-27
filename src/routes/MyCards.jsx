@@ -1,10 +1,6 @@
 import CardList from "../features/cards/CardList";
 import { useOutletContext } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { FaGear } from "react-icons/fa6";
-
-
-
 
 const MyCards = () => {
     let userName = useOutletContext();

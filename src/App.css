@@ -9,7 +9,7 @@ a.active:not(.homeNav) {
 }
 
 ::selection {
-  background-color: purple;
+  background-color: #9132e7;
   
 }
 
@@ -23,11 +23,9 @@ a.active:not(.homeNav) {
 .dark .main-div,
 .dark #root {
   margin: 0 auto;
-  background-image: linear-gradient(to bottom, #302b2e, #2e2a2e, #2c2a2d, #2a292c, #28282b, #252629, #222426, #202223, #1c1e1e, #181a1a, #141615, #101110);
   color: #f8f5f5;
   background: linear-gradient(179.4deg, rgb(13, 4, 36) -16.9%, rgb(71, 30, 84) 119.9%);
   transition: background-color 0.5s ease, color 0.5s ease;
-
 }
 
 
