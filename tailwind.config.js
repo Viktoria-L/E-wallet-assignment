@@ -4,14 +4,19 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: "class",
   theme: {
-    extend: {},
+    extend: {
+      maxWidth: {
+        '290': '320px',
+    }
   },
   plugins: [],
-  darkMode: 'class',
   fontFamily: {
-    fira: ['Fira Sans'],
+    montserrat: ['Montserrat'],
+    poppins: ['Poppins'],
   },
+}
 }
 
 

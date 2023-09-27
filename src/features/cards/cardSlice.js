@@ -1,77 +1,77 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from 'uuid';
-// import axios from 'axios';
 
-// export const getRandomUser = createAsyncThunk("cards/getRandomUser", async () => {
-//       let response = await axios.get("https://randomuser.me/api");
-//       console.log(response);
-//       return response.data;
-//     })
 
-const randomName = {
-  first: "",
-  last: "",
- }
+export const getUser = createAsyncThunk("cards/getUser", async () => {
+  let response = await fetch(`https://randomuser.me/api/`)
+  let data = await response.json();
+  let userName = data.results[0].name.first + " " + data.results[0].name.last;
+  return userName;
+})
 
 
 const cardSlice = createSlice({
   name: "cards",
   initialState: {
-    // randomName: randomName,
-    card: { //Förhandsgranskningskort placeholder
+    cardHolder: "",
+    status: null,  
+    card: { //PreviewCard placeholder-states
       number: "",
-      name: "",
       expiry: "",
       cvc: "",
       
     },
     activeCardId: null,
-    cards: [{ // En array för att spara flera kreditkort,
+    cards: [{ 
       number: "4123123456789000",
-      name: "",
       expiry: "1203",
       cvc: "564",
+      cardHolder: "",
       id: uuidv4(),
       vendor: "VISA",
     }], 
-    } , 
+  
+    }, 
   reducers: {
     setCardInput: (state, action) => {
       const { field, value } = action.payload;
       state.card[field] = value;
-      console.log(JSON.parse(JSON.stringify(state.card)));  
+       
     },
+     resetCardInput: (state) => {
+      state.card = {
+        number: "",
+        expiry: "",
+        cvc: "",
+      }},
     addCard: (state, action) => {
-      console.log("lägger till kort", action.payload);
       state.cards.push(action.payload);
-      console.log(JSON.parse(JSON.stringify(state.cards)));
     },
     toggleActiveCard: (state, action) => {
-      console.log("toggleActive payload", action.payload)
       state.activeCardId = action.payload;
-      console.log("Redux State efter toggleActiveCard:", JSON.parse(JSON.stringify(state)));
-      console.log(JSON.parse(JSON.stringify(state.cards)))
       },    
      deleteCard: (state, action) => {
-        console.log("tar bort kort: ", action.payload);
         const targetId = action.payload; // ID att ta bort
         const updatedCards = state.cards.filter(card => card.id !== targetId);
-      console.log("updatedCards: ", updatedCards)
         // Uppdatera state med de kvarvarande korten
         state.cards = updatedCards;
     },
-    // changeName: (state, action) => {
-    //     console.log("ändrar namn", action.payload.name.first);
-    //     state.randomName.first = action.payload.name.first;
-    //     state.randomName.last = action.payload.name.last;
-
-    //     console.log("från changeName", state.randomName.first + " " + state.randomName.last)
-    // },    
+  },
+  extraReducers: {
+    [getUser.pending]: (state, action) => {
+      state.status = "Loading user...";
+    },
+    [getUser.fulfilled]: (state, action) => {
+      state.status = "success!";
+      state.cardHolder = action.payload;
+      state.cards[0].cardHolder = action.payload;
+    },
+    [getUser.rejected]: (state, action) => {
+      state.status = "Failed to get user, pls try again :(";
+    }
   }
 });
 
 
-
-export const { changeName, setCardInput, addCard, toggleActiveCard, deleteCard } = cardSlice.actions;
-
+export const { setCardInput, addCard, toggleActiveCard, deleteCard, resetCardInput } = cardSlice.actions;
 export default cardSlice.reducer;

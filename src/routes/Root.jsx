@@ -1,30 +1,27 @@
 import { Outlet, useLoaderData } from "react-router-dom"
 import { Navbar } from "../components/Navbar";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from "react";
-import { FaMoon, FaSun } from "react-icons/fa6";
+import { FaMoon, FaLightbulb } from "react-icons/fa6";
+import { getUser } from '../features/cards/cardSlice';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 const Root = () => {
-    const [darkMode, setDarkMode] = useState(false);
-    const userData = useLoaderData();
     const dispatch = useDispatch();
-    const userName = `${userData.results[0]?.name.first} ${userData.results[0]?.name.last}`
+    const userName = useSelector((state) => state.cardInStore.cardHolder)
 
     useEffect(() => {
-        if (darkMode) {
-            document.documentElement.classList.add("dark");
-        } else {
-            document.documentElement.classList.remove("dark");
-        }
-    }, [darkMode]);
+      dispatch(getUser());    
+    }, []);
 
     return (
-        <div className={`main-div h-screen text-black dark:text-white dark:bg-black`}>
-            <button onClick={() => {setDarkMode((prevState) => !prevState)}}>
-                {darkMode ? <FaSun className="text-lg mt-1 ml-1" /> : <FaMoon className="text-xl mt-1 ml-1" />}
-            </button>
-            <Navbar />          
-            <Outlet context={userName} />
+        <div className="main-div h-screen flex flex-col justify-between">           
+            <Header />          
+            <div className="flex-grow max-w-screen-xl m-auto">
+                <Outlet context={userName} />
+            </div>
+            <Footer />
         </div>
     )
 }
